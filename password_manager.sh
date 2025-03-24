@@ -18,13 +18,20 @@ while true; do
             echo "$service:$username:$password" >> passwords.txt
             echo "パスワードの追加は成功しました。"
             ;;
-
         "Get Password")
             # サービス名を入力
-
+            read -p "サービス名を入力してください：" service
             # サービス名が保存されているか確認
-
-            # サービスが保存されていれば出力
+            if grep -q "$service" passwords.txt; then
+                # サービスが保存されていれば出力
+                grep "$service" passwords.txt | while IFS=: read service username password; do
+                    echo "サービス名：$service"
+                    echo "ユーザー名：$username"
+                    echo "パスワード：$password"
+                done
+            else
+                echo "そのサービスは登録されていません。"
+            fi
             ;;
         "Exit")
             # プログラム終了
@@ -37,4 +44,3 @@ while true; do
             ;;
     esac
 done
-
